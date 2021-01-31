@@ -8,4 +8,4 @@ WORKDIR /usr/src/gomoku-ai/gomoku-server
 COPY --from=gcc /usr/src/gomoku-ai ./..
 RUN npm install
 EXPOSE 7682
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

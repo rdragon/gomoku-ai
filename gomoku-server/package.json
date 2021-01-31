@@ -4,8 +4,8 @@
   "description": "A bot capable of playing Gomoku (Five in a Row).",
   "license": "ISC",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/rdragon/gomoku-ai"
+    "type": "git",
+    "url": "https://github.com/rdragon/gomoku-ai"
   },
   "scripts": {
     "prestart": "coffee --bare --compile public/client.coffee",
