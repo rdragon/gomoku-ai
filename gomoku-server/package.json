@@ -1,13 +1,21 @@
 {
   "name": "gomoku-server",
   "version": "1.0.0",
+  "description": "A bot capable of playing Gomoku (Five in a Row).",
+  "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rdragon/gomoku-ai"
+  },
   "scripts": {
     "prestart": "coffee --bare --compile public/client.coffee",
     "start": "coffee server.coffee"
   },
   "dependencies": {
-    "coffee-script": "^1.12.4",
-    "express": "^4.14.1",
-    "socket.io": "^1.7.3"
+    "bufferutil": "^4.0.3",
+    "coffee-script": "^1.12.7",
+    "express": "^4.17.1",
+    "socket.io": "^3.1.0",
+    "utf-8-validate": "^5.0.4"
   }
 }
