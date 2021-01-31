@@ -27,7 +27,15 @@ http.listen port, ->
 server.get '/', (req, res) ->
   res.sendFile 'index.html'
 
+connectionIdCounter = 0
+
 io.on 'connection', (socket) ->
+  connectionId = connectionIdCounter++
+  debug = (msg) ->
+    console.log "#{new Date().toISOString()}  #{connectionId}  #{msg}"
+  verbose = (msg) ->
+    debug msg
+  debug 'new connection'
   process = null
   processClosed = true
   restartProcess = false
@@ -47,8 +55,10 @@ io.on 'connection', (socket) ->
       process.kill()
   startProcess = ->
     process = spawn exec, args
+    verbose 'spawn process'
     processClosed = false
     process.stdout.on 'data', (data) ->
+      verbose 'process data'
       buffer += data.toString()
       i = buffer.indexOf '\n'
       while i isnt -1
@@ -61,6 +71,7 @@ io.on 'connection', (socket) ->
         else
           log line + '\n'
     process.stderr.on 'data', (data) ->
+      verbose 'process error'
       errorBuffer += data.toString()
       i = errorBuffer.indexOf '\n'
       while i isnt -1
@@ -69,6 +80,7 @@ io.on 'connection', (socket) ->
         i = errorBuffer.indexOf '\n'
         logError line + '\n'
     process.on 'close', (exitCode) ->
+      verbose 'process close'
       processClosed = true
       buffer = ''
       errorBuffer = ''
@@ -78,15 +90,20 @@ io.on 'connection', (socket) ->
         restartProcess = false
         startProcess()
   socket.on 'disconnect', ->
+    debug 'client disconnected'
     process.kill() unless processClosed
   socket.on 'submit move', (data) ->
+    debug 'move submitted'
     process.stdin.write (data.pos + 1) + '\n' unless processClosed
   socket.on 'write', (data) ->
+    debug 'write'
     process.stdin.write data.msg unless processClosed
   socket.on 'new game', (data) ->
+    debug 'new game'
     args = defaultArgs.slice 0
     args.push x for x in data.args
     newGame()
   socket.on 'stop game', (data) ->
+    debug 'stop game'
     process.kill() unless processClosed
   newGame()
