@@ -88,8 +88,8 @@ io.on 'connection', (socket) ->
       processClosed = true
       buffer = ''
       errorBuffer = ''
-      if exitCode isnt 0 and exitCode isnt null
-        logError "the process has exited with code #{exitCode}\n"
+      if exitCode isnt 0 and not restartProcess
+        logError "the process has exited with code #{exitCode} and signal #{signal}\n"
       if restartProcess
         restartProcess = false
         startProcess()
