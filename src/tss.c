@@ -361,7 +361,7 @@ static int create_threats_tail(ThreatCollection *col, int v, int d, int rightmin
     v += d;
     leftmin++;
     rightmin--;
-    if (board[v] == 3 - pid)
+    if (v < v0 || v > v1 || board[v] == 3 - pid)
     {
       break;
     }
