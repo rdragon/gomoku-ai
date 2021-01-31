@@ -5,6 +5,8 @@ io = require('socket.io')(http)
 spawn = require('child_process').spawn
 fs = require 'fs'
 
+console.log 'gomoku-server, build 1'
+
 server.use express.static __dirname + '/public'
 
 exec = '../bin/release/gomoku-ai'
@@ -22,7 +24,7 @@ if process.argv.length > 2 and /^[1-9][0-9]*$/.test process.argv[2]
   port = parseInt process.argv[2]
 
 http.listen port, ->
-  console.log "listening on #{port}"
+  console.log "listening on port #{port}"
 
 server.get '/', (req, res) ->
   res.sendFile 'index.html'
@@ -55,7 +57,7 @@ io.on 'connection', (socket) ->
       process.kill()
   startProcess = ->
     process = spawn exec, args
-    verbose 'spawn process'
+    verbose "spawn process, args = #{args.join(', ')}"
     processClosed = false
     process.stdout.on 'data', (data) ->
       verbose 'process data'
@@ -63,6 +65,7 @@ io.on 'connection', (socket) ->
       i = buffer.indexOf '\n'
       while i isnt -1
         line = buffer.substr 0, i
+        verbose "process line: #{line}"
         buffer = buffer.substr i + 1
         i = buffer.indexOf '\n'
         if line.charAt(0) is '{'
@@ -76,24 +79,31 @@ io.on 'connection', (socket) ->
       i = errorBuffer.indexOf '\n'
       while i isnt -1
         line = errorBuffer.substr 0, i
+        verbose "process error line: #{line}"
         errorBuffer = errorBuffer.substr i + 1
         i = errorBuffer.indexOf '\n'
         logError line + '\n'
-    process.on 'close', (exitCode) ->
-      verbose 'process close'
+    process.on 'close', (exitCode, signal) ->
+      verbose "process exited with code #{exitCode} and signal #{signal}"
       processClosed = true
       buffer = ''
       errorBuffer = ''
       if exitCode isnt 0 and exitCode isnt null
-        logError "the process has exited with exit code #{exitCode}\n"
+        logError "the process has exited with code #{exitCode}\n"
       if restartProcess
         restartProcess = false
         startProcess()
+    process.on 'disconnect', ->
+      verbose 'process disconnected'
+    process.on 'error', (err) ->
+      verbose "process error: #{err}"
+    process.on 'exit', (code, signal) ->
+      verbose "process exit  code=#{code} signal=#{signal}"
   socket.on 'disconnect', ->
     debug 'client disconnected'
     process.kill() unless processClosed
   socket.on 'submit move', (data) ->
-    debug 'move submitted'
+    debug "move #{data.pos + 1} submitted"
     process.stdin.write (data.pos + 1) + '\n' unless processClosed
   socket.on 'write', (data) ->
     debug 'write'
