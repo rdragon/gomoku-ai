@@ -1,7 +1,0 @@
-#!/bin/bash
-coffee --bare --compile --watch server.coffee public/client.coffee &
-while [ ! -f server.js ]
-do
-    sleep 1
-done
-supervisor --watch server.js --no-restart-on exit server.js
