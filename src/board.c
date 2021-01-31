@@ -23,7 +23,7 @@ int tail_length(int v, int d, char id)
   int len;
   len = 0;
   v += d;
-  while (board[v] == id)
+  while (v >= 0 && v < size && board[v] == id)
   {
     len++;
     v += d;

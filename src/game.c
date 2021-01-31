@@ -287,7 +287,7 @@ void run_game()
       {
         printf("press enter to start the next turn\n");
       }
-      wait_for_newline();
+      //wait_for_newline();
     }
     if (exit_now)
     {
