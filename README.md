@@ -1,7 +1,7 @@
 # Gomoku AI
 A bot capable of playing Gomoku (Five in a Row). The bot uses a combination of [alpha-beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning) and [threat-space search](https://www.mimuw.edu.pl/~awojna/SID/referaty/Go-Moku.pdf) to determine its moves.
 
-Play [here](http://gomoku-ai.azurewebsites.net) against the bot.
+Play [here](http://gomoku-ai.azurewebsites.net) against the bot (note: it might take a while for the page to load).
 
 ## Quick start (using Docker)
 To install and run the application using Docker follow these steps:
