@@ -15,7 +15,7 @@
     "bufferutil": "^4.0.3",
     "coffee-script": "^1.12.7",
     "express": "^4.19.2",
-    "socket.io": "^4.6.2",
+    "socket.io": "^4.7.5",
     "utf-8-validate": "^5.0.4"
   }
 }
