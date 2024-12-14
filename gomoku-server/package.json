@@ -14,7 +14,7 @@
   "dependencies": {
     "bufferutil": "^4.0.3",
     "coffee-script": "^1.12.7",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "socket.io": "^4.8.0",
     "utf-8-validate": "^5.0.4"
   }
